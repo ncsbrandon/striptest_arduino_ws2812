@@ -13,11 +13,12 @@
 
 #define STATUS_LED_PIN LED_BUILTIN
 
+#define MAX_BRIGHT 128
+
 CRGB leds[STRING_COUNT][LEDS_PER_STRING];
 unsigned int level = 0;
 
 void setup() {
-
   // wakeup blink
   pinMode(STATUS_LED_PIN, OUTPUT);
   for (int i = 0; i < 8; i++) {
@@ -27,6 +28,7 @@ void setup() {
     delay(50);
   }
 
+  // initialize strings memory and pins
   FastLED.addLeds<WS2812B, STRING1_PIN, GRB>(leds[STRING1_INDEX], LEDS_PER_STRING);
   FastLED.addLeds<WS2812B, STRING2_PIN, GRB>(leds[STRING2_INDEX], LEDS_PER_STRING);
   FastLED.addLeds<WS2812B, STRING3_PIN, GRB>(leds[STRING3_INDEX], LEDS_PER_STRING);
@@ -36,15 +38,15 @@ void setup() {
 void loop() {
   // level spinner
   level++;
-  if (level > 128)
+  if (level > MAX_BRIGHT)
     level = 0;
 
   // set the LED color
   for (int i = 0; i < LEDS_PER_STRING; i++) {
-    leds[STRING1_INDEX][i] = CRGB(level, 0, 128 - level);
-    leds[STRING2_INDEX][i] = CRGB(level, 0, 128 - level);
-    leds[STRING3_INDEX][i] = CRGB(level, 0, 128 - level);
-    leds[STRING4_INDEX][i] = CRGB(level, 0, 128 - level);
+    leds[STRING1_INDEX][i] = CRGB(level, 0, MAX_BRIGHT - level);
+    leds[STRING2_INDEX][i] = CRGB(level, 0, MAX_BRIGHT - level);
+    leds[STRING3_INDEX][i] = CRGB(level, 0, MAX_BRIGHT - level);
+    leds[STRING4_INDEX][i] = CRGB(level, 0, MAX_BRIGHT - level);
   }
 
   // show
