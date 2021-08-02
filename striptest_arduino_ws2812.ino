@@ -1,5 +1,6 @@
 #include <FastLED.h>
 
+// string settings
 #define LEDS_PER_STRING 300
 #define STRING_COUNT 4
 #define STRING1_INDEX 0
@@ -11,8 +12,8 @@
 #define STRING4_INDEX 3
 #define STRING4_PIN 8
 
+// other settings
 #define STATUS_LED_PIN LED_BUILTIN
-
 #define MAX_BRIGHT 128
 
 CRGB leds[STRING_COUNT][LEDS_PER_STRING];
