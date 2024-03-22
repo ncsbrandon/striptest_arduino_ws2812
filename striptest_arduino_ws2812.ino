@@ -2,36 +2,17 @@
 
 // string settings
 #define LEDS_PER_STRING 300
-#define STRING_COUNT 4
-#define STRING1_INDEX 0
 #define STRING1_PIN 3
-#define STRING2_INDEX 1
-#define STRING2_PIN 5
-#define STRING3_INDEX 2
-#define STRING3_PIN 6
-#define STRING4_INDEX 3
-#define STRING4_PIN 8
-
-// other settings
-#define STATUS_LED_PIN LED_BUILTIN
 #define MAX_BRIGHT 128
+#define STATUS_LED_PIN 13
 
-//CRGB leds[STRING_COUNT][LEDS_PER_STRING];
 CRGB leds[LEDS_PER_STRING];
-unsigned int level = 0;
 
 void setup() {
-  // setup pints
-  pinMode(STATUS_LED_PIN, OUTPUT);
-  
   // initialize strings memory and pins
-  //FastLED.addLeds<WS2812B, STRING1_PIN, GRB>(leds[STRING1_INDEX], LEDS_PER_STRING);
-  //FastLED.addLeds<WS2812B, STRING2_PIN, GRB>(leds[STRING2_INDEX], LEDS_PER_STRING);
-  //FastLED.addLeds<WS2812B, STRING3_PIN, GRB>(leds[STRING3_INDEX], LEDS_PER_STRING);
-  //FastLED.addLeds<WS2812B, STRING4_PIN, GRB>(leds[STRING4_INDEX], LEDS_PER_STRING);
   FastLED.addLeds<WS2812B, STRING1_PIN, RGB>(leds, LEDS_PER_STRING);
 
-  // wakeup blink
+pinMode(STATUS_LED_PIN, OUTPUT);
   for (int i = 0; i < 10; i++) {
     digitalWrite(STATUS_LED_PIN, HIGH);
     delay(50);
@@ -41,25 +22,50 @@ void setup() {
 }
 
 void loop() {
-  // level spinner
-  level++;
-  if (level > MAX_BRIGHT)
-    level = 0;
-
-  // set the LED color
-  for (int i = 0; i < LEDS_PER_STRING; i++) {
-    //leds[STRING1_INDEX][i] = CRGB(level, 0, MAX_BRIGHT - level);
-    //leds[STRING2_INDEX][i] = CRGB(level, 0, MAX_BRIGHT - level);
-    //leds[STRING3_INDEX][i] = CRGB(level, 0, MAX_BRIGHT - level);
-    //leds[STRING4_INDEX][i] = CRGB(level, 0, MAX_BRIGHT - level);
-    leds[i] = CRGB(level, level, level);
-  }
-
-  // show
-  FastLED.show();
-
-  // delay
+  // off
   digitalWrite(STATUS_LED_PIN, LOW);
-  delay(100);
+  setString(0, 0, 0);
+  delay(250);
+
+  // red
   digitalWrite(STATUS_LED_PIN, HIGH);
+  setString(MAX_BRIGHT, 0, 0);
+  delay(250);
+
+  // green
+  digitalWrite(STATUS_LED_PIN, LOW);
+  setString(0, MAX_BRIGHT, 0);
+  delay(250);
+
+  // blue
+  digitalWrite(STATUS_LED_PIN, HIGH);
+  setString(0, 0, MAX_BRIGHT);
+  delay(250);
+
+  // red + green
+  digitalWrite(STATUS_LED_PIN, LOW);
+  setString(MAX_BRIGHT, MAX_BRIGHT, 0);
+  delay(250);
+
+  // red + blue
+  digitalWrite(STATUS_LED_PIN, HIGH);
+  setString(MAX_BRIGHT, 0, MAX_BRIGHT);
+  delay(250);
+
+  // green + blue
+  digitalWrite(STATUS_LED_PIN, LOW);
+  setString(0, MAX_BRIGHT, MAX_BRIGHT);
+  delay(250);
+  
+  // white
+  digitalWrite(STATUS_LED_PIN, HIGH);
+  setString(MAX_BRIGHT, MAX_BRIGHT, MAX_BRIGHT);
+  delay(250);
+}
+
+void setString(int red, int green, int blue) {
+  for (int i = 0; i < LEDS_PER_STRING; i++) {
+    leds[i] = CRGB(red, green, blue);
+  }
+  FastLED.show();
 }
